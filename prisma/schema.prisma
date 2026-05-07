@@ -12,25 +12,22 @@ datasource db {
   provider = "mysql"
 }
 
-enum Role {
-  ADMIN
-  STAFF
-}
-
 model User {
   id       Int    @id @default(autoincrement())
   name     String
   email    String
   mobile   String
   password String
-  role     Role   @default(STAFF)
 
   isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sessions Session[]
-  otpCodes OtpCode[]
+  sessions        Session[]
+  otpCodes        OtpCode[]
+  exercises       Exercise[]
+  routines        Routine[]
+  workoutSessions WorkoutSession[]
 }
 
 model Session {
@@ -54,4 +51,196 @@ model OtpCode {
   expiresAt DateTime
   isUsed    Boolean  @default(false)
   createdAt DateTime @default(now())
+}
+
+// Exercise Library
+
+model Exercise {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  name        String
+  description String?
+  videoUrl    String?
+
+  primaryMuscleGroup MuscleGroup?
+  muscleGroups       Json?
+
+  equipment    Equipment?
+  exerciseType ExerciseType @default(RESISTANCE)
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  routineExercises RoutineExercise[]
+  workoutExercises WorkoutExercise[]
+}
+
+enum MuscleGroup {
+  CHEST
+  BACK
+  SHOULDERS
+  BICEPS
+  TRICEPS
+  FOREARMS
+  LEGS
+  QUADS
+  HAMSTRINGS
+  GLUTES
+  CALVES
+  CORE
+  ABS
+  FULL_BODY
+  CARDIO
+  OTHER
+}
+
+enum Equipment {
+  BODYWEIGHT
+  BARBELL
+  DUMBBELL
+  KETTLEBELL
+  MACHINE
+  CABLE
+  RESISTANCE_BAND
+  EZ_BAR
+  TRAP_BAR
+  BENCH
+  PULL_UP_BAR
+  CARDIO_MACHINE
+  OTHER
+}
+
+enum ExerciseType {
+  RESISTANCE
+  CARDIO
+  MOBILITY
+  STRETCHING
+  BALANCE
+  OTHER
+}
+
+// Routines
+model Routine {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  name        String
+  description String?
+
+  exercises       RoutineExercise[]
+  workoutSessions WorkoutSession[]
+
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RoutineExercise {
+  id Int @id @default(autoincrement())
+
+  routineId Int
+  routine   Routine @relation(fields: [routineId], references: [id])
+
+  exerciseId Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  order       Int
+  targetSets  Int?
+  targetReps  String?
+  restSeconds Int?
+  notes       String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Workouts
+model WorkoutSession {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  routineId Int?
+  routine   Routine? @relation(fields: [routineId], references: [id])
+
+  name   String?
+  date   DateTime      @default(now())
+  status WorkoutStatus @default(IN_PROGRESS)
+
+  exercises WorkoutExercise[]
+
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkoutExercise {
+  id Int @id @default(autoincrement())
+
+  workoutSessionId Int
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+
+  exerciseId Int
+  exercise   Exercise @relation(fields: [exerciseId], references: [id])
+
+  order       Int
+  targetSets  Int?
+  targetReps  String?
+  restSeconds Int?
+  notes       String?
+
+  status WorkoutExerciseStatus @default(PENDING)
+
+  sets WorkoutSet[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkoutSet {
+  id Int @id @default(autoincrement())
+
+  workoutExerciseId Int
+  workoutExercise   WorkoutExercise @relation(fields: [workoutExerciseId], references: [id])
+
+  setNumber Int
+
+  weight Float?
+  reps   Int?
+
+  setType WorkoutSetType @default(NORMAL)
+
+  notes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum WorkoutStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum WorkoutExerciseStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  SKIPPED
+}
+
+enum WorkoutSetType {
+  NORMAL
+  WARMUP
+  DROP
+  FAILURE
 }

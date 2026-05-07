@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { authService } from "./auth.service.js";
-import sendResponse from "@/src/lib/sendResponse.js";
-import { statusCodes } from "@/src/constants/statusCodes.js";
+import { authService } from "./auth.service";
+import sendResponse from "@/src/lib/sendResponse";
+import { statusCodes } from "@/src/constants/statusCodes";
 
 async function login(req: Request, res: Response, next: NextFunction) {
   try {
@@ -18,6 +18,7 @@ async function login(req: Request, res: Response, next: NextFunction) {
       statusCode: statusCodes.OK,
       message: "OTP sent successfully",
       status: true,
+      data: { userId: user.id },
     });
   } catch (err) {
     next(err);
