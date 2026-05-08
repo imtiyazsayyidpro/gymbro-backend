@@ -8,6 +8,8 @@ async function getAllExercises(req: Request, res: Response, next: NextFunction) 
   try {
     const { search, primaryMuscleGroup, equipment, exerciseType, page, limit, orderBy, orderByField } = req.query;
 
+    console.log("GET EXERCISES USER:", req.user);
+
     const result = await exerciseService.getAllExercises({
       userId: req.user.id,
       search: search as string,
