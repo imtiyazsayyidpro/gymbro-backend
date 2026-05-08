@@ -35,6 +35,7 @@ async function ensureExerciseNameIsAvailable(userId: number, name: string, exclu
     where: {
       userId,
       name,
+      isActive: true,
       ...(excludeId && { NOT: { id: excludeId } }),
     },
   });

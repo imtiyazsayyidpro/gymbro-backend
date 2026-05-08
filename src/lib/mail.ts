@@ -29,6 +29,7 @@ export async function sendMail({ to, subject, html, text, attachments }: SendMai
       pass,
     },
   });
+
   const from = process.env.MAIL_FROM || `Gymbro <${user}>`;
 
   return transporter.sendMail({

@@ -48,14 +48,45 @@ export function WelcomeMail({ name, logoSrc = "https://gymbro.imtiyazsayyid.in/a
                   Account ready
                 </p>
                 <h1 style="margin:0 0 12px; color:#f0f0ee; font-size:24px; line-height:32px; font-weight:800;">
-                  Thanks for registering, ${safeName}
+                  Welcome in, ${safeName}
                 </h1>
-                <p style="margin:0 0 22px; color:rgba(240,240,238,0.58); font-size:15px; line-height:24px;">
-                  Your Gymbro account is active. You can now track workouts, build routines, and follow your progress from session to session.
+                <p style="margin:0 0 20px; color:rgba(240,240,238,0.62); font-size:15px; line-height:24px;">
+                  Your Gymbro account is active. Gymbro is your training log for the work that happens after the hype: planned routines, clean workout tracking, and progress you can actually look back on.
                 </p>
+
+                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%; margin:0 0 20px;">
+                  <tr>
+                    <td style="padding:16px 18px; border:1px solid rgba(255,255,255,0.07); border-radius:16px; background:#1a1a1b;">
+                      <p style="margin:0 0 6px; color:#c8f135; font-size:14px; line-height:20px; font-weight:800;">Build routines that make sense</p>
+                      <p style="margin:0; color:rgba(240,240,238,0.52); font-size:13px; line-height:21px;">Create repeatable plans with exercises, set targets, rep ranges, rest times, and notes.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="height:10px; line-height:10px; font-size:10px;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 18px; border:1px solid rgba(255,255,255,0.07); border-radius:16px; background:#1a1a1b;">
+                      <p style="margin:0 0 6px; color:#c8f135; font-size:14px; line-height:20px; font-weight:800;">Log workouts without friction</p>
+                      <p style="margin:0; color:rgba(240,240,238,0.52); font-size:13px; line-height:21px;">Start a session, record sets, track weights and reps, and keep rest periods under control.</p>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="height:10px; line-height:10px; font-size:10px;">&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:16px 18px; border:1px solid rgba(255,255,255,0.07); border-radius:16px; background:#1a1a1b;">
+                      <p style="margin:0 0 6px; color:#c8f135; font-size:14px; line-height:20px; font-weight:800;">Watch the trend, not the mood</p>
+                      <p style="margin:0; color:rgba(240,240,238,0.52); font-size:13px; line-height:21px;">Use your history to see exercise progress, routine volume, and muscle-group breakdowns over time.</p>
+                    </td>
+                  </tr>
+                </table>
+
                 <div style="padding:16px 18px; border:1px solid rgba(200,241,53,0.18); border-radius:16px; background:rgba(200,241,53,0.08); color:#c8f135; font-size:14px; line-height:22px; font-weight:700;">
-                  Start logging your next workout and keep your training history in one place.
+                  Best first move: add a few exercises, build your first routine, then log the next session while it is fresh.
                 </div>
+                <p style="margin:18px 0 0; color:rgba(240,240,238,0.38); font-size:13px; line-height:21px;">
+                  Glad to have you here. Keep the entries honest, and Gymbro will give you the receipts.
+                </p>
               </td>
             </tr>
           </table>
