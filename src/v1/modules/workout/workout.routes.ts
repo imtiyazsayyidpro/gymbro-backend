@@ -3,6 +3,7 @@ import { validateBody, validateParams, validateQuery } from "@/src/middlewares/v
 import { workoutController } from "./workout.controller";
 import {
   addWorkoutSetSchema,
+  exerciseHistoryParamsSchema,
   startRoutineParamsSchema,
   updateWorkoutExerciseSchema,
   updateWorkoutSetSchema,
@@ -16,6 +17,7 @@ const workoutRouter = Router();
 
 workoutRouter.post("/start-routine/:routineId", validateParams(startRoutineParamsSchema), workoutController.startWorkoutFromRoutine);
 workoutRouter.get("/active", workoutController.getActiveWorkout);
+workoutRouter.get("/exercises/:exerciseId/last-session", validateParams(exerciseHistoryParamsSchema), workoutController.getLastExerciseSession);
 workoutRouter.get("/", validateQuery(workoutQuerySchema), workoutController.getWorkoutHistory);
 workoutRouter.patch("/:id/complete", validateParams(workoutParamsSchema), workoutController.completeWorkout);
 workoutRouter.patch("/:id/cancel", validateParams(workoutParamsSchema), workoutController.cancelWorkout);

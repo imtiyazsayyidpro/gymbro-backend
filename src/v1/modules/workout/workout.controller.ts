@@ -57,6 +57,17 @@ async function getWorkoutHistory(req: Request, res: Response, next: NextFunction
   }
 }
 
+async function getLastExerciseSession(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { exerciseId } = req.params;
+    const result = await workoutService.getLastExerciseSession(req.user.id, Number(exerciseId));
+
+    return sendResponse({ res, status: true, message: "Exercise history fetched successfully", data: result });
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function updateWorkoutExercise(req: Request, res: Response, next: NextFunction) {
   try {
     const { workoutId, workoutExerciseId } = req.params;
@@ -128,6 +139,7 @@ export const workoutController = {
   getActiveWorkout,
   getSingleWorkout,
   getWorkoutHistory,
+  getLastExerciseSession,
   updateWorkoutExercise,
   addSet,
   updateSet,

@@ -190,6 +190,63 @@ async function getWorkoutHistory(filters: {
   };
 }
 
+async function getLastExerciseSession(userId: number, exerciseId: number) {
+  const workoutSession = await prisma.workoutSession.findFirst({
+    where: {
+      userId,
+      status: WorkoutStatus.COMPLETED,
+      exercises: {
+        some: {
+          exerciseId,
+          sets: {
+            some: {},
+          },
+        },
+      },
+    },
+    orderBy: [{ completedAt: "desc" }, { date: "desc" }, { id: "desc" }],
+    include: {
+      routine: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      exercises: {
+        where: { exerciseId },
+        take: 1,
+        include: {
+          exercise: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          sets: {
+            orderBy: { setNumber: "asc" },
+          },
+        },
+      },
+    },
+  });
+
+  const workoutExercise = workoutSession?.exercises[0];
+
+  if (!workoutSession || !workoutExercise) {
+    return null;
+  }
+
+  return {
+    workoutSessionId: workoutSession.id,
+    workoutName: workoutSession.name,
+    routine: workoutSession.routine,
+    date: workoutSession.date,
+    completedAt: workoutSession.completedAt,
+    exercise: workoutExercise.exercise,
+    sets: workoutExercise.sets,
+  };
+}
+
 async function updateWorkoutExercise(userId: number, workoutId: number, workoutExerciseId: number, data: UpdateWorkoutExercisePayload) {
   await getInProgressWorkoutById(userId, workoutId);
   await getWorkoutExerciseById(workoutId, workoutExerciseId);
@@ -310,6 +367,7 @@ export const workoutService = {
   getActiveWorkout,
   getSingleWorkoutById,
   getWorkoutHistory,
+  getLastExerciseSession,
   updateWorkoutExercise,
   addSet,
   updateSet,

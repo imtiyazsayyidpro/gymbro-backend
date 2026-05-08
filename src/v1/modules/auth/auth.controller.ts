@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { authService } from "./auth.service";
 import sendResponse from "@/src/lib/sendResponse";
 import { statusCodes } from "@/src/constants/statusCodes";
+import { sendMail } from "@/src/lib/mail";
+import { LoginOTPMail } from "@/src/lib/email-templates/LoginOTPMail/LoginOTPMail";
+import path from "node:path";
 
 async function login(req: Request, res: Response, next: NextFunction) {
   try {
@@ -9,9 +12,22 @@ async function login(req: Request, res: Response, next: NextFunction) {
     const user = await authService.login(email, password);
     const otp = await authService.generateOtp(user.id);
 
-    console.log("TODO: SEND OTP ", { otp });
-
-    // TODO: send otp here
+    await sendMail({
+      to: user.email,
+      subject: "Your Gymbro login code",
+      html: LoginOTPMail({
+        name: user.name,
+        otp,
+      }),
+      text: `Your Gymbro login code is ${otp}. It expires in 10 minutes.`,
+      attachments: [
+        {
+          filename: "logo.png",
+          path: path.resolve(process.cwd(), "../gymbro-app/public/assets/logo.png"),
+          cid: "gymbro-logo",
+        },
+      ],
+    });
 
     return sendResponse({
       res,

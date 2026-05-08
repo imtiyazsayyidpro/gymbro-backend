@@ -97,6 +97,13 @@ async function getExerciseProgress(userId: number, exerciseId: number, filters: 
         include: {
           sets: {
             orderBy: { setNumber: "asc" },
+            select: {
+              id: true,
+              setNumber: true,
+              weight: true,
+              reps: true,
+              setType: true,
+            },
           },
         },
       },
@@ -123,13 +130,6 @@ async function getExerciseProgress(userId: number, exerciseId: number, filters: 
       bestSetReps: bestSet?.reps ?? null,
       totalReps: includedSets.reduce((total, set) => total + (set.reps ?? 0), 0),
       totalSets: includedSets.length,
-      sets: includedSets.map((set) => ({
-        id: set.id,
-        setNumber: set.setNumber,
-        weight: set.weight,
-        reps: set.reps,
-        setType: set.setType,
-      })),
     };
   });
 
@@ -153,7 +153,13 @@ async function getExerciseSetTypeBreakdown(userId: number, exerciseId: number, f
       exercises: {
         where: { exerciseId },
         include: {
-          sets: true,
+          sets: {
+            select: {
+              weight: true,
+              reps: true,
+              setType: true,
+            },
+          },
         },
       },
     },
@@ -204,7 +210,13 @@ async function getRoutineVolumeProgress(userId: number, routineId: number, filte
     include: {
       exercises: {
         include: {
-          sets: true,
+          sets: {
+            select: {
+              weight: true,
+              reps: true,
+              setType: true,
+            },
+          },
         },
       },
     },
@@ -249,7 +261,13 @@ async function getMuscleGroupVolumeBreakdown(userId: number, filters: DateRange 
               primaryMuscleGroup: true,
             },
           },
-          sets: true,
+          sets: {
+            select: {
+              weight: true,
+              reps: true,
+              setType: true,
+            },
+          },
         },
       },
     },

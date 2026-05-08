@@ -23,6 +23,10 @@ export const workoutSetParamsSchema = z.object({
   setId: z.coerce.number({ error: "Invalid set ID" }).int("Invalid set ID").positive("Invalid set ID"),
 });
 
+export const exerciseHistoryParamsSchema = z.object({
+  exerciseId: z.coerce.number({ error: "Invalid exercise ID" }).int("Invalid exercise ID").positive("Invalid exercise ID"),
+});
+
 export const workoutQuerySchema = z.object({
   page: z.coerce.number().int("Page must be an integer").positive("Page must be positive").optional(),
   limit: z.coerce.number().int("Limit must be an integer").positive("Limit must be positive").max(100, "Limit cannot exceed 100").optional(),
