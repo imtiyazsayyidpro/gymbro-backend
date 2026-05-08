@@ -1,7 +1,5 @@
-type LoginOTPMailParams = {
+type WelcomeMailParams = {
   name: string;
-  otp: string;
-  expiresInMinutes?: number;
   logoSrc?: string;
 };
 
@@ -14,9 +12,8 @@ function escapeHtml(value: string) {
     .replace(/'/g, "&#039;");
 }
 
-export function LoginOTPMail({ name, otp, expiresInMinutes = 10, logoSrc = "https://gymbro.imtiyazsayyid.in/assets/logo.png" }: LoginOTPMailParams) {
+export function WelcomeMail({ name, logoSrc = "https://gymbro.imtiyazsayyid.in/assets/logo.png" }: WelcomeMailParams) {
   const safeName = escapeHtml(name);
-  const safeOtp = escapeHtml(otp);
   const safeLogoSrc = escapeHtml(logoSrc);
 
   return `<!doctype html>
@@ -26,7 +23,7 @@ export function LoginOTPMail({ name, otp, expiresInMinutes = 10, logoSrc = "http
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <meta name="supported-color-schemes" content="dark" />
-    <title>Gymbro Login OTP</title>
+    <title>Welcome to Gymbro</title>
   </head>
   <body style="margin:0; padding:0; background:#0e0e0f; color:#f0f0ee; font-family:Arial, Helvetica, sans-serif;">
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%; min-height:100vh; background:#0e0e0f;">
@@ -48,28 +45,17 @@ export function LoginOTPMail({ name, otp, expiresInMinutes = 10, logoSrc = "http
             <tr>
               <td style="padding:30px 28px 34px;">
                 <p style="margin:0 0 8px; color:rgba(240,240,238,0.45); font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase;">
-                  Sign in request
+                  Account ready
                 </p>
                 <h1 style="margin:0 0 12px; color:#f0f0ee; font-size:24px; line-height:32px; font-weight:800;">
-                  Your login code is ready, ${safeName}
+                  Thanks for registering, ${safeName}
                 </h1>
-                <p style="margin:0 0 24px; color:rgba(240,240,238,0.58); font-size:15px; line-height:24px;">
-                  Enter this 6-digit code in Gymbro to finish signing in. The code expires in ${expiresInMinutes} minutes.
+                <p style="margin:0 0 22px; color:rgba(240,240,238,0.58); font-size:15px; line-height:24px;">
+                  Your Gymbro account is active. You can now track workouts, build routines, and follow your progress from session to session.
                 </p>
-
-                <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width:100%; margin:0 0 24px;">
-                  <tr>
-                    <td align="center" style="padding:20px 14px; border:1px solid rgba(200,241,53,0.22); border-radius:18px; background:rgba(200,241,53,0.08); box-shadow:0 0 20px rgba(200,241,53,0.18);">
-                      <div style="color:#c8f135; font-size:34px; line-height:40px; font-weight:900; letter-spacing:0.34em; text-indent:0.34em;">
-                        ${safeOtp}
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-
-                <p style="margin:0; color:rgba(240,240,238,0.38); font-size:13px; line-height:21px;">
-                  If you did not request this code, you can ignore this email. Your account stays protected unless this code is entered in the app.
-                </p>
+                <div style="padding:16px 18px; border:1px solid rgba(200,241,53,0.18); border-radius:16px; background:rgba(200,241,53,0.08); color:#c8f135; font-size:14px; line-height:22px; font-weight:700;">
+                  Start logging your next workout and keep your training history in one place.
+                </div>
               </td>
             </tr>
           </table>
